@@ -1,10 +1,9 @@
-package com.techcourse.controller;
+package nextstep.mvc.servlet;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nextstep.mvc.servlet.AnnotationHandlerMapping;
 import nextstep.mvc.servlet.HandlerExecution;
-import nextstep.mvc.view.JspView;
 import nextstep.mvc.view.ModelAndView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,12 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class RegisterControllerTest {
+class AnnotationHandlerMappingTest {
+
     private AnnotationHandlerMapping handlerMapping;
 
     @BeforeEach
     void setUp() {
-        handlerMapping = new AnnotationHandlerMapping("com.techcourse.controller");
+        handlerMapping = new AnnotationHandlerMapping("samples");
         try {
             handlerMapping.initialize();
         } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
@@ -33,32 +33,28 @@ class RegisterControllerTest {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpServletResponse response = mock(HttpServletResponse.class);
 
-        when(request.getRequestURI()).thenReturn("/register/view");
+        when(request.getAttribute("id")).thenReturn("gugu");
+        when(request.getRequestURI()).thenReturn("/get-test");
         when(request.getMethod()).thenReturn("GET");
 
         final HandlerExecution handlerExecution = (HandlerExecution) handlerMapping.getHandler(request);
         final ModelAndView modelAndView = handlerExecution.handle(request, response);
 
-        assertThat(modelAndView.getView()).usingRecursiveComparison()
-                .isEqualTo(new JspView("/register.jsp"));
+        assertThat(modelAndView.getObject("id")).isEqualTo("gugu");
     }
-
 
     @Test
     void post() {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpServletResponse response = mock(HttpServletResponse.class);
 
-        when(request.getRequestURI()).thenReturn("/register");
+        when(request.getAttribute("id")).thenReturn("gugu");
+        when(request.getRequestURI()).thenReturn("/post-test");
         when(request.getMethod()).thenReturn("POST");
-        when(request.getParameter("account")).thenReturn("gugu");
-        when(request.getParameter("password")).thenReturn("1234");
-        when(request.getParameter("email")).thenReturn("gugu@gugu");
 
         final HandlerExecution handlerExecution = (HandlerExecution) handlerMapping.getHandler(request);
         final ModelAndView modelAndView = handlerExecution.handle(request, response);
 
-        assertThat(modelAndView.getView()).usingRecursiveComparison()
-                .isEqualTo(new JspView("redirect:/"));
+        assertThat(modelAndView.getObject("id")).isEqualTo("gugu");
     }
 }

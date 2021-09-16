@@ -1,8 +1,6 @@
-package nextstep.mvc.controller.tobe;
+package nextstep.mvc.servlet;
 
 import jakarta.servlet.http.HttpServletRequest;
-import nextstep.mvc.servlet.ControllerScanner;
-import nextstep.mvc.servlet.HandlerMapping;
 import nextstep.web.annotation.Controller;
 import nextstep.web.annotation.RequestMapping;
 import nextstep.web.support.RequestMethod;
@@ -35,6 +33,7 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         controllers.forEach(this::mapMethods);
 
         log.info("Initialized AnnotationHandlerMapping!");
+        controllers.keySet().forEach(path -> log.info("Path : {}, Controller : {}", path, controllers.get(path).getClass()));
     }
 
     private void mapMethods(Class<?> controller, Object instance) {
