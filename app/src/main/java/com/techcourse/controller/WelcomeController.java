@@ -7,10 +7,10 @@ import nextstep.web.annotation.RequestMapping;
 import nextstep.web.support.RequestMethod;
 
 @Controller
-public class RegisterViewController {
+public class WelcomeController {
 
-    @RequestMapping(value = "/register/view", method = RequestMethod.GET)
-    public String execute(HttpServletRequest req, HttpServletResponse res) {
-        return "/register.jsp";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String welcome(HttpServletRequest req, HttpServletResponse res) {
+        return "redirect:index.jsp";
     }
 }
