@@ -11,7 +11,8 @@ public class CharacterEncodingFilter implements Filter {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
+        //this is empty method
     }
 
     @Override
@@ -24,5 +25,6 @@ public class CharacterEncodingFilter implements Filter {
 
     @Override
     public void destroy() {
+        //this is empty method
     }
 }

@@ -3,12 +3,13 @@ package nextstep.mvc;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import nextstep.mvc.controller.tobe.ControllerHandlerAdapter;
-import nextstep.mvc.controller.tobe.ExecutionHandlerAdapter;
+import nextstep.mvc.controller.ExecutionHandlerAdapter;
+import nextstep.mvc.exception.HandlerAdapterNotFoundException;
 import nextstep.mvc.view.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +42,6 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void initHandlerAdapter() {
-        handlerAdapters.add(new ControllerHandlerAdapter());
         handlerAdapters.add(new ExecutionHandlerAdapter());
     }
 
@@ -57,6 +57,9 @@ public class DispatcherServlet extends HttpServlet {
                 HandlerAdapter adapter = getHandlerAdapter(obj);
                 ModelAndView modelAndView = adapter.handle(request, response, obj);
                 modelAndView.render(request, response);
+            } catch (InvocationTargetException e) {
+                e.getTargetException().printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,6 +80,6 @@ public class DispatcherServlet extends HttpServlet {
             }
         }
 
-        throw new RuntimeException("HandlerAdapter Not Found");
+        throw new HandlerAdapterNotFoundException();
     }
 }

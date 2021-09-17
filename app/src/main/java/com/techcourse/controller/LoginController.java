@@ -5,35 +5,35 @@ import com.techcourse.repository.InMemoryUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import nextstep.mvc.controller.asis.Controller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import nextstep.mvc.view.JspView;
+import nextstep.mvc.view.ModelAndView;
+import nextstep.mvc.view.exception.JspViewException;
+import nextstep.web.annotation.Controller;
+import nextstep.web.annotation.RequestMapping;
+import nextstep.web.support.RequestMethod;
 
-public class LoginController implements Controller {
+import static nextstep.mvc.view.ViewName.*;
 
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+@Controller
+public class LoginController {
 
-    @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        if (UserSession.isLoggedIn(req.getSession())) {
-            return "redirect:/index.jsp";
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
+        if (UserSession.isLoggedIn(request.getSession())) {
+            return new ModelAndView(new JspView( REDIRECT_PREFIX + VIEW_INDEX));
         }
-
-        return InMemoryUserRepository.findByAccount(req.getParameter("account"))
-                .map(user -> {
-                    log.info("User : {}", user);
-                    return login(req, user);
-                })
-                .orElse("redirect:/401.jsp");
-    }
-
-    private String login(HttpServletRequest request, User user) {
+        User user = findUser(request);
         if (user.checkPassword(request.getParameter("password"))) {
             final HttpSession session = request.getSession();
             session.setAttribute(UserSession.SESSION_KEY, user);
-            return "redirect:/index.jsp";
+            return new ModelAndView(new JspView( REDIRECT_PREFIX + VIEW_INDEX));
         } else {
-            return "redirect:/401.jsp";
+            return new ModelAndView(new JspView( REDIRECT_PREFIX + VIEW_401));
         }
+    }
+
+    private User findUser(HttpServletRequest request) {
+        return InMemoryUserRepository.findByAccount(request.getParameter("account"))
+                .orElseThrow(JspViewException::new);
     }
 }

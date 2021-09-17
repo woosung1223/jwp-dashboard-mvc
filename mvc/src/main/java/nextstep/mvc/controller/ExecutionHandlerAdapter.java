@@ -1,9 +1,11 @@
-package nextstep.mvc.controller.tobe;
+package nextstep.mvc.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nextstep.mvc.HandlerAdapter;
 import nextstep.mvc.view.ModelAndView;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class ExecutionHandlerAdapter implements HandlerAdapter {
     @Override
@@ -12,7 +14,8 @@ public class ExecutionHandlerAdapter implements HandlerAdapter {
     }
 
     @Override
-    public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws InvocationTargetException, IllegalAccessException {
         HandlerExecution handlerExecution = (HandlerExecution) handler;
         return handlerExecution.handle(request, response);
     }

@@ -8,13 +8,13 @@ import nextstep.web.annotation.Controller;
 import nextstep.web.annotation.RequestMapping;
 import nextstep.web.support.RequestMethod;
 
-import static nextstep.mvc.view.ViewName.VIEW_REGISTER;
+import static nextstep.mvc.view.ViewName.VIEW_INDEX;
 
 @Controller
-public class RegisterViewController {
+public class ForwardController {
 
-    @RequestMapping(value = "/register/view", method = RequestMethod.GET)
-    public ModelAndView registerView(HttpServletRequest request, HttpServletResponse response) {
-        return new ModelAndView(new JspView(VIEW_REGISTER));
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView forward(HttpServletRequest request, HttpServletResponse response) {
+        return new ModelAndView(new JspView(VIEW_INDEX));
     }
 }
