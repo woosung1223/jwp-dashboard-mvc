@@ -1,8 +1,9 @@
-package nextstep.mvc.controller.tobe;
+package nextstep.mvc.register;
 
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.mvc.HandlerAdapter;
+import nextstep.mvc.adapter.HandlerAdapter;
+import nextstep.mvc.exception.BadRequestException;
 
 public class HandlerAdapterRegistry {
 
@@ -20,6 +21,6 @@ public class HandlerAdapterRegistry {
         return handlerAdapters.stream()
             .filter(handlerAdapter -> handlerAdapter.supports(handle))
             .findFirst()
-            .orElseThrow();
+            .orElseThrow(BadRequestException::new);
     }
 }

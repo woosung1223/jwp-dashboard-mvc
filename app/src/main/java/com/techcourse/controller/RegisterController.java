@@ -1,11 +1,13 @@
 package com.techcourse.controller;
 
 import com.techcourse.domain.User;
-import com.techcourse.repository.InMemoryUserRepository;
+import com.techcourse.domain.UserSession;
+import com.techcourse.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import nextstep.mvc.view.JspView;
+import nextstep.mvc.Pages;
 import nextstep.mvc.view.ModelAndView;
+import nextstep.web.annotation.Autowired;
 import nextstep.web.annotation.Controller;
 import nextstep.web.annotation.RequestMapping;
 import nextstep.web.support.RequestMethod;
@@ -13,19 +15,26 @@ import nextstep.web.support.RequestMethod;
 @Controller
 public class RegisterController {
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView doPost(HttpServletRequest req, HttpServletResponse res) {
-        final User user = new User(2,
-            req.getParameter("account"),
-            req.getParameter("password"),
-            req.getParameter("email"));
-        InMemoryUserRepository.save(user);
+    @Autowired
+    private UserService userService;
 
-        return new ModelAndView(new JspView("redirect:/index.jsp"));
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ModelAndView createUser(HttpServletRequest request, HttpServletResponse response) {
+        final User user = new User(
+            request.getParameter("account"),
+            request.getParameter("password"),
+            request.getParameter("email"));
+
+        userService.save(user);
+
+        return new ModelAndView(Pages.INDEX.redirectPageName());
     }
 
     @RequestMapping(value = "/register/view", method = RequestMethod.GET)
-    public ModelAndView doGet(HttpServletRequest req, HttpServletResponse res) {
-        return new ModelAndView(new JspView("/register.jsp"));
+    public ModelAndView getRegisterPage(HttpServletRequest request, HttpServletResponse response) {
+        if (UserSession.isLoggedIn(request.getSession())) {
+            return new ModelAndView(Pages.INDEX.redirectPageName());
+        }
+        return new ModelAndView(Pages.REGISTER.getPageName());
     }
 }
