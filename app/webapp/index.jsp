@@ -9,7 +9,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/index.jsp">대시보드</a>
+            <a class="navbar-brand ps-3" href="/">대시보드</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <c:choose>
@@ -21,7 +21,9 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#!">내정보</a></li>
                             <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                            <form method="post" action="/logout">
+                                <li><button class="dropdown-item" type="submit">로그아웃</button></li>
+                            </form>
                         </ul>
                     </li>
                 </ul>
@@ -29,7 +31,7 @@
             </c:when>
             <c:otherwise>
             <div class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
-                <a class="nav-link" href="/login/view" role="button"><i class="fas fa-user fa-fw"></i>&nbsp;로그인</a>
+                <a class="nav-link" href="/login" role="button"><i class="fas fa-user fa-fw"></i>&nbsp;로그인</a>
             </div>
             </c:otherwise>
             </c:choose>

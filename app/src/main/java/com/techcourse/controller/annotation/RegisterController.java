@@ -15,9 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Controller
-public class AnnotationRegisterController {
+public class RegisterController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AnnotationRegisterController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegisterController.class);
+    private static final String REDIRECT_PREFIX = "redirect:";
     private static final String HOME_PATH = "/index";
 
     @RequestMapping(value = "/register", method = GET)
@@ -31,13 +32,15 @@ public class AnnotationRegisterController {
         LOG.info("Annotation Register Controller - POST Method");
 
         User user = new User(
-            2L,
+            null,
             request.getParameter("account"),
             request.getParameter("password"),
             request.getParameter("email")
         );
         InMemoryUserRepository.save(user);
 
-        return new ModelAndView(new JspView(HOME_PATH));
+        LOG.info("User id: {}, account: {}", user.getId(), user.getAccount());
+
+        return new ModelAndView(new JspView(REDIRECT_PREFIX + HOME_PATH));
     }
 }

@@ -1,10 +1,10 @@
-package nextstep.web.exception;
+package com.techcourse.exception;
 
-public class WebException extends RuntimeException {
+public class AppException extends RuntimeException {
 
     private final Integer httpStatus;
 
-    public WebException(String message, Integer httpStatus) {
+    public AppException(String message, Integer httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
     }
