@@ -22,16 +22,17 @@ public class JspView implements View {
     }
 
     @Override
-    public void render(final Map<String, ?> model, final HttpServletRequest request, final HttpServletResponse response) {
+    public void render(final Map<String, ?> model, final HttpServletRequest request,
+                       final HttpServletResponse response) {
         try {
-            replaceToUnchecked(model, request, response);
+            tryRender(model, request, response);
         } catch (IOException | ServletException e) {
-            throw new RuntimeException("Unexpected exception occurs during rendering : ", e);
+            throw new IllegalArgumentException("Unexpected exception occurs during rendering Jsp View: ", e);
         }
 
     }
 
-    private void replaceToUnchecked(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
+    private void tryRender(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         if (viewName.startsWith(JspView.REDIRECT_PREFIX)) {
             response.sendRedirect(viewName.substring(JspView.REDIRECT_PREFIX.length()));
