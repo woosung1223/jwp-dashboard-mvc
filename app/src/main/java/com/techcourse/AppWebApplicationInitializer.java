@@ -2,11 +2,10 @@ package com.techcourse;
 
 import jakarta.servlet.ServletContext;
 import nextstep.mvc.DispatcherServlet;
-import nextstep.mvc.controller.asis.HandlerControllerAdapter;
-import nextstep.mvc.controller.tobe.AnnotationHandlerMapping;
-import nextstep.mvc.controller.tobe.adapter.ModelAndViewHandlerAdapter;
-import nextstep.mvc.controller.tobe.adapter.ViewNameHandlerAdapter;
-import nextstep.mvc.controller.tobe.adapter.VoidHandlerAdapter;
+import nextstep.mvc.mapping.AnnotationHandlerMapping;
+import nextstep.mvc.adapter.ModelAndViewHandlerAdapter;
+import nextstep.mvc.adapter.ViewNameHandlerAdapter;
+import nextstep.mvc.adapter.VoidHandlerAdapter;
 import nextstep.web.WebApplicationInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +18,17 @@ public class AppWebApplicationInitializer implements WebApplicationInitializer {
     public void onStartup(final ServletContext servletContext) {
         log.info("Start AppWebApplication Initializer");
         final var dispatcherServlet = new DispatcherServlet();
-        dispatcherServlet.addHandlerMapping(new ManualHandlerMapping());
-        dispatcherServlet.addHandlerMapping(new AnnotationHandlerMapping("com.techcourse"));
-        dispatcherServlet.addHandlerAdapter(new HandlerControllerAdapter());
-        dispatcherServlet.addHandlerAdapter(new ModelAndViewHandlerAdapter());
-        dispatcherServlet.addHandlerAdapter(new ViewNameHandlerAdapter());
-        dispatcherServlet.addHandlerAdapter(new VoidHandlerAdapter());
+        dispatcherServlet.addHandlerMapping(new AnnotationHandlerMapping(getClass().getPackageName()));
+        addHandlerAdapters(dispatcherServlet);
 
         final var dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
+    }
+
+    private void addHandlerAdapters(DispatcherServlet dispatcherServlet) {
+        dispatcherServlet.addHandlerAdapter(new ModelAndViewHandlerAdapter());
+        dispatcherServlet.addHandlerAdapter(new ViewNameHandlerAdapter());
+        dispatcherServlet.addHandlerAdapter(new VoidHandlerAdapter());
     }
 }

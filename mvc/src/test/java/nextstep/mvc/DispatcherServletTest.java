@@ -7,13 +7,11 @@ import static org.mockito.Mockito.when;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import nextstep.mvc.controller.asis.ForwardController;
-import nextstep.mvc.controller.tobe.AnnotationHandlerMapping;
-import nextstep.mvc.controller.asis.HandlerControllerAdapter;
-import nextstep.mvc.controller.tobe.HandlerExecution;
-import nextstep.mvc.controller.tobe.adapter.ModelAndViewHandlerAdapter;
-import nextstep.mvc.controller.tobe.adapter.ViewNameHandlerAdapter;
-import nextstep.mvc.controller.tobe.adapter.VoidHandlerAdapter;
+import nextstep.mvc.mapping.AnnotationHandlerMapping;
+import nextstep.mvc.mapping.HandlerExecution;
+import nextstep.mvc.adapter.ModelAndViewHandlerAdapter;
+import nextstep.mvc.adapter.ViewNameHandlerAdapter;
+import nextstep.mvc.adapter.VoidHandlerAdapter;
 import nextstep.mvc.view.JspView;
 import nextstep.mvc.view.ModelAndView;
 import nextstep.mvc.view.NullView;
@@ -119,28 +117,6 @@ class DispatcherServletTest {
             verify(handlerMapping, times(1)).getHandler(request);
             verify(handlerAdapter, times(1)).supports(handlerExecution);
             verify(handlerAdapter, times(1)).handle(request, response, handlerExecution);
-        }
-
-        @DisplayName("Controller 타입의 핸들러를 찾은 경우 HandlerControllerAdapter를 통해 실행시킨다.")
-        @Test
-        void controller_handler() throws Exception {
-            final var handlerMapping = mock(HandlerMapping.class);
-            final var handlerAdapter = mock(HandlerControllerAdapter.class);
-            final var controller = new ForwardController("/");
-            dispatcherServlet.addHandlerMapping(handlerMapping);
-            dispatcherServlet.addHandlerAdapter(handlerAdapter);
-            dispatcherServlet.init();
-
-            when(handlerMapping.getHandler(request)).thenReturn(controller);
-            when(handlerAdapter.supports(controller)).thenReturn(true);
-            when(handlerAdapter.handle(request, response, controller))
-                    .thenReturn(new ModelAndView(new JspView("index.jsp")));
-
-            dispatcherServlet.service(request, response);
-
-            verify(handlerMapping, times(1)).getHandler(request);
-            verify(handlerAdapter, times(1)).supports(controller);
-            verify(handlerAdapter, times(1)).handle(request, response, controller);
         }
     }
 }
