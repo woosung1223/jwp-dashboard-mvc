@@ -1,11 +1,11 @@
-package nextstep.mvc;
+package nextstep.mvc.controller.annotation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import nextstep.mvc.controller.tobe.HandlerExecution;
+import nextstep.mvc.HandlerAdapter;
 import nextstep.mvc.view.ModelAndView;
 
-public class AnnotationHandlerAdapter implements HandlerAdapter {
+public class HandlerExecutionHandlerAdapter implements HandlerAdapter {
     @Override
     public boolean supports(final Object handler) {
         return handler instanceof HandlerExecution;
