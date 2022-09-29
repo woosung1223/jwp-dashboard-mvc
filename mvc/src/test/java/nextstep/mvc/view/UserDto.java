@@ -1,21 +1,17 @@
-package com.techcourse.domain;
+package nextstep.mvc.view;
 
-public class User {
+public class UserDto {
 
     private final long id;
     private final String account;
     private final String password;
     private final String email;
 
-    public User(long id, String account, String password, String email) {
+    public UserDto(long id, String account, String password, String email) {
         this.id = id;
         this.account = account;
         this.password = password;
         this.email = email;
-    }
-
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
     }
 
     public long getId() {
@@ -36,7 +32,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "id=" + id +
                 ", account='" + account + '\'' +
                 ", password='" + password + '\'' +

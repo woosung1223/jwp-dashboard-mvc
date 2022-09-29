@@ -53,8 +53,8 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
-    private void render(final ModelAndView modelAndView, final HttpServletRequest request,
-                        final HttpServletResponse response) throws Exception {
+    public void render(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
         modelAndView.getView().render(modelAndView.getModel(), request, response);
     }
 }
