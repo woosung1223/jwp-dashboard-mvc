@@ -36,7 +36,8 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException {
+    protected void service(final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException {
         log.debug("Method : {}, Request URI : {}", request.getMethod(), request.getRequestURI());
 
         try {
@@ -58,8 +59,9 @@ public class DispatcherServlet extends HttpServlet {
         return handlerAdapterRegistry.getHandlerAdapter(handler);
     }
 
-    private void move(final ModelAndView modelAndView, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        View view = modelAndView.getView();
+    private void move(final ModelAndView modelAndView, final HttpServletRequest request,
+                      final HttpServletResponse response) throws Exception {
+        final View view = modelAndView.getView();
         view.render(modelAndView.getModel(), request, response);
     }
 }
